@@ -26,7 +26,7 @@ const RelatedProducts = ({category , subCategory}) => {
             id={item._id}
             name={item.name}
             price={item.price}
-            image={item.image}
+            image={item.imageUrl}
             className='cursor-pointer w-[24%]  sm:w-full sm:mb-3 flex-shrink-0  object-cover'
           />
         ))}
