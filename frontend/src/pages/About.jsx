@@ -1,6 +1,6 @@
 import React from 'react';
 import { assets } from '../assets/frontend_assets/assets';
-import NewsLetterBox from '../Components/NewsLetterBox';
+import NewsLetterBox from '../components/NewsLetterBox';
 import Title from '../components/Title';
 
 const About = () => {
