@@ -1,25 +1,64 @@
+// ================== IMPORTS ==================
+
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-   cart: {
-        type: Object,
-        default: {},
-    },
-    
-}, { minimize: false }  );
 
-const userModel = mongoose.models.user || mongoose.model('user', userSchema);
+// ================== USER SCHEMA ==================
+
+const userSchema = new mongoose.Schema(
+
+  {
+    // ================== USER NAME ==================
+
+    name: {
+      type: String,
+      required: true,
+    },
+
+
+    // ================== EMAIL ==================
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+
+
+    // ================== PASSWORD ==================
+
+    password: {
+      type: String,
+      required: true,
+    },
+
+
+    // ================== CART ==================
+
+    // Structure: { productId: { size: quantity } }
+    cart: {
+      type: Object,
+      default: {},
+    },
+
+  },
+
+  // ================== OPTIONS ==================
+
+  {
+    minimize: false, // keep empty objects (important for cart)
+  }
+
+);
+
+
+// ================== MODEL ==================
+
+const userModel =
+  mongoose.models.user ||
+  mongoose.model('user', userSchema);
+
+
+// ================== EXPORT ==================
+
 export default userModel;

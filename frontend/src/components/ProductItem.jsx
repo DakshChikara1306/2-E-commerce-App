@@ -1,28 +1,68 @@
-import React from 'react'
+// ================== IMPORTS ==================
+
+import React from 'react';
+
 import { ShopContext } from '../context/ShopContext.jsx';
-import {Link} from 'react-router-dom';
 
-const ProductItem = ({id,image, name, price }) => {
-    const {currency} = React.useContext(ShopContext);
+import { Link } from 'react-router-dom';
 
+
+// ================== COMPONENT ==================
+
+const ProductItem = ({ id, image, name, price }) => {
+
+
+  // ================== CONTEXT ==================
+
+  const { currency } = React.useContext(ShopContext);
+
+
+
+  // ================== UI ==================
 
   return (
-     <Link to={`/product/${id}`} className="text-gray-700 cursor-pointer">
-      <div className="overflow-hidden border rounded-lg p-4 shadow-sm  h-[300px]">
-        <img
-          src={image?.[0] || "/no-image.png"}
 
+    <Link
+      to={`/product/${id}`}
+      className="text-gray-700 cursor-pointer"
+    >
+
+
+      {/* ================== PRODUCT CARD ================== */}
+
+      <div className="overflow-hidden border rounded-lg p-4 shadow-sm h-[300px]">
+
+
+        {/* ================== PRODUCT IMAGE ================== */}
+
+        <img
+          src={image?.[0] || "/no-image.png"} // fallback image
           alt=""
-          className="w-full h-48 object-cover mb-2 rounded hover:scale-110 transition ease-in-out duration-500 "
+          className="w-full h-48 object-cover mb-2 rounded hover:scale-110 transition ease-in-out duration-500"
         />
-        <p className="pt-3 pb-1 text-sm ">{name}</p>
+
+
+        {/* ================== PRODUCT NAME ================== */}
+
+        <p className="pt-3 pb-1 text-sm">
+          {name}
+        </p>
+
+
+        {/* ================== PRODUCT PRICE ================== */}
+
         <p className="text-sm font-medium">
           {currency}
           {price}
         </p>
-      </div>
-    </Link>
-  )
-}
 
-export default ProductItem
+      </div>
+
+    </Link>
+  );
+};
+
+
+// ================== EXPORT ==================
+
+export default ProductItem;

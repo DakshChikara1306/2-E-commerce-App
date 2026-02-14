@@ -1,11 +1,21 @@
+// ================== IMPORTS ==================
+
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 
-// placing order using COD method
+
+// ================== PLACE ORDER (COD) ==================
+
 const placeOrder = async (req, res) => {
   try {
-    const userId = req.userId; // ✅ from middleware
+
+    // ================== REQUEST DATA ==================
+
+    const userId = req.userId; // from auth middleware
     const { items, amount, address } = req.body;
+
+
+    // ================== ORDER DATA ==================
 
     const orderData = {
       userId,
@@ -17,67 +27,105 @@ const placeOrder = async (req, res) => {
       date: Date.now(),
     };
 
+
+    // ================== SAVE ORDER ==================
+
     const newOrder = new orderModel(orderData);
     await newOrder.save();
 
+
+    // ================== CLEAR USER CART ==================
+
     await userModel.findByIdAndUpdate(userId, { cart: {} });
 
+
+    // ================== RESPONSE ==================
+
     res.status(200).json({
-      message: "Order placed successfully",
       success: true,
+      message: "Order placed successfully",
     });
 
   } catch (error) {
-    console.log("ORDER ERROR:", error); // ✅ important
+
+    console.log("ORDER ERROR:", error);
+
     res.status(500).json({
-      message: "Error placing order",
       success: false,
+      message: "Error placing order",
       error: error.message,
     });
   }
 };
 
 
-const placeOrderStripe = async (req, res) => {
 
-}
+// ================== STRIPE ORDER ==================
+
+const placeOrderStripe = async (req, res) => {
+  // TODO: Implement Stripe payment logic
+};
+
+
+
+// ================== RAZORPAY ORDER ==================
 
 const placeOrderRazorpay = async (req, res) => {
+  // TODO: Implement Razorpay payment logic
+};
 
-}
 
-// All orders data for admin panel
+
+// ================== ALL ORDERS (ADMIN) ==================
+
 const allOrders = async (req, res) => {
-  try{
+  try {
+
     const orders = await orderModel.find({});
+
+
+    // ================== RESPONSE ==================
+
     res.json({
-      message: "Orders fetched successfully",
       success: true,
+      message: "Orders fetched successfully",
       orders,
     });
-  }catch(error){
+
+  } catch (error) {
+
     console.log("ALL ORDERS ERROR:", error);
+
     res.status(500).json({
-      message: "Error fetching orders",
       success: false,
+      message: "Error fetching orders",
       error: error.message,
     });
-
   }
+};
 
-}
 
-// user order data for frontend
+
+// ================== USER ORDERS ==================
+
 const userOrders = async (req, res) => {
   try {
 
-    const userId = req.userId; // ✅ from auth middleware
+    // ================== USER ==================
+
+    const userId = req.userId;
+
+
+    // ================== FETCH ORDERS ==================
 
     const orders = await orderModel.find({ userId });
 
+
+    // ================== RESPONSE ==================
+
     res.status(200).json({
-      message: "Orders fetched successfully",
       success: true,
+      message: "Orders fetched successfully",
       orders,
     });
 
@@ -86,35 +134,58 @@ const userOrders = async (req, res) => {
     console.log("USER ORDERS ERROR:", error);
 
     res.status(500).json({
-      message: "Error fetching orders",
       success: false,
+      message: "Error fetching orders",
       error: error.message,
     });
   }
 };
 
 
-// update order status for admin panel
+
+// ================== UPDATE ORDER STATUS ==================
 
 const updateStatus = async (req, res) => {
-  try{
+  try {
+
+    // ================== REQUEST DATA ==================
+
     const { orderId, status } = req.body;
+
+
+    // ================== UPDATE ==================
+
     await orderModel.findByIdAndUpdate(orderId, { status });
+
+
+    // ================== RESPONSE ==================
+
     res.json({
-      message: "Order status updated",
       success: true,
+      message: "Order status updated",
     });
 
-  }catch(error){
+  } catch (error) {
+
     console.log("UPDATE STATUS ERROR:", error);
+
     res.status(500).json({
-      message: "Error updating order status",
       success: false,
+      message: "Error updating order status",
       error: error.message,
     });
-
   }
+};
 
-}
 
-export { placeOrder, placeOrderStripe, placeOrderRazorpay, allOrders, userOrders, updateStatus }
+
+// ================== EXPORTS ==================
+
+export {
+  placeOrder,
+  placeOrderStripe,
+  placeOrderRazorpay,
+  allOrders,
+  userOrders,
+  updateStatus
+};

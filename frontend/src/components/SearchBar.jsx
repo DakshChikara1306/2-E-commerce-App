@@ -20,11 +20,11 @@ const SearchBar = () => {
     search,
     setSearch,
     showSearch,
-    setShowSearch
+    setShowSearch,
   } = useContext(ShopContext);
 
 
-  // ================== STATES ==================
+  // ================== STATE ==================
 
   // Controls visibility of search bar
   const [visible, setVisible] = React.useState(false);
@@ -32,21 +32,25 @@ const SearchBar = () => {
 
   // ================== ROUTE INFO ==================
 
-  // Get current URL path
+  // Get current route
   const location = useLocation();
+
 
 
   // ================== EFFECT ==================
 
-  // Show search bar only on collection page
-  // and when showSearch is true
+  // Show search bar only when:
+  // 1. User is on "collection" page
+  // 2. Search is enabled (showSearch = true)
 
   useEffect(() => {
 
-    if (location.pathname.includes('collection') && showSearch) {
+    if (
+      location.pathname.includes('collection') &&
+      showSearch
+    ) {
       setVisible(true);
-    }
-    else {
+    } else {
       setVisible(false);
     }
 
@@ -58,15 +62,16 @@ const SearchBar = () => {
 
   return showSearch && visible ? (
 
-
     <div className='border-t border-b bg-gray-50 text-center'>
 
 
-      {/* Search Input Box */}
+      {/* ================== SEARCH BOX ================== */}
+
       <div className='w-[450px] inline-flex items-center justify-center border border-gray-400 px-5 py-2 my-8 rounded-full'>
 
 
-        {/* Input Field */}
+        {/* ================== INPUT ================== */}
+
         <input
           type='text'
           placeholder='Search...'
@@ -76,7 +81,8 @@ const SearchBar = () => {
         />
 
 
-        {/* Search Icon */}
+        {/* ================== ICON ================== */}
+
         <img
           src={assets.search_icon}
           alt=''
@@ -87,7 +93,8 @@ const SearchBar = () => {
 
 
 
-      {/* Close Button */}
+      {/* ================== CLOSE BUTTON ================== */}
+
       <img
         onClick={() => setShowSearch(false)}
         src={assets.cross_icon}
@@ -95,10 +102,12 @@ const SearchBar = () => {
         className='w-4 h-4 ml-3 inline cursor-pointer'
       />
 
-
     </div>
 
   ) : null;
 };
+
+
+// ================== EXPORT ==================
 
 export default SearchBar;

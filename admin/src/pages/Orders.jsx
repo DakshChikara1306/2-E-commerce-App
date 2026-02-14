@@ -1,15 +1,33 @@
+// ================== IMPORTS ==================
+
 import React, { useState, useEffect } from 'react';
+
 import axios from 'axios';
+
 import { backendUrl, currency } from '../App';
+
 import { toast } from 'react-toastify';
-import { assets } from '../assets/assets'; // ✅ make sure path is correct
+
+import { assets } from '../assets/assets';
+
+
+// ================== COMPONENT ==================
 
 const Orders = ({ token }) => {
 
+
+  // ================== STATES ==================
+
+  // Stores all orders
   const [orders, setOrders] = useState([]);
 
-  // ================= FETCH ORDERS =================
+
+
+  // ================== FETCH ORDERS ==================
+
   const fetchAllOrders = async () => {
+
+    // If no token, don't fetch
     if (!token) return;
 
     try {
@@ -26,12 +44,20 @@ const Orders = ({ token }) => {
 
       console.log("ALL ORDERS:", response.data);
 
+
+      // ================== SUCCESS ==================
+
       if (response.data.success) {
-          const sortedOrders = response.data.orders.sort(
-    (a, b) => new Date(b.date) - new Date(a.date)
-  );
+
+        // Sort orders by latest date
+        const sortedOrders = response.data.orders.sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+
         setOrders(sortedOrders);
+
       } else {
+
         toast.error(response.data.message || "Failed to fetch orders");
       }
 
@@ -46,7 +72,10 @@ const Orders = ({ token }) => {
     }
   };
 
-  // ================= UPDATE STATUS =================
+
+
+  // ================== UPDATE ORDER STATUS ==================
+
   const orderStatusHandler = async (e, orderId) => {
 
     const status = e.target.value;
@@ -63,32 +92,57 @@ const Orders = ({ token }) => {
         }
       );
 
+
+      // ================== SUCCESS ==================
+
       if (response.data.success) {
-        
+
         toast.success("Order status updated");
-        fetchAllOrders(); // refresh
+
+        // Refresh orders after update
+        fetchAllOrders();
+
       } else {
+
         toast.error(response.data.message);
       }
 
     } catch (err) {
+
       console.log("STATUS ERROR:", err);
+
       toast.error("Failed to update status");
     }
   };
 
-  // ================= USE EFFECT =================
+
+
+  // ================== EFFECT ==================
+
+  // Fetch orders when token changes
   useEffect(() => {
     fetchAllOrders();
   }, [token]);
 
-  // ================= UI =================
+
+
+  // ================== UI ==================
+
   return (
+
     <div>
+
+
+      {/* ================== TITLE ================== */}
 
       <h3>Order Page</h3>
 
+
+
+      {/* ================== ORDERS LIST ================== */}
+
       <div>
+
         {orders.map((order, index) => (
 
           <div
@@ -96,28 +150,38 @@ const Orders = ({ token }) => {
             className='grid grid-cols-1 md:grid-cols-[0.5fr_2fr_1fr] lg:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 items-start border-2 border-gray-300 p-5 md:p-8 my-3 md:my-4 text-xs sm:text-sm text-gray-700'
           >
 
-            {/* ICON */}
+
+            {/* ================== ICON ================== */}
+
             <img
-              className='w-12'
               src={assets.parcel_icon}
               alt=''
+              className='w-12'
             />
 
-            {/* ITEMS + ADDRESS */}
+
+
+            {/* ================== ITEMS + ADDRESS ================== */}
+
             <div>
+
 
               {/* ITEMS */}
               <div>
+
                 {order.items.map((item, i) => {
 
                   if (i === order.items.length - 1) {
+
                     return (
                       <p className='py-0.5' key={i}>
                         {item.name} x {item.quantity} <span>{item.size}</span>
                       </p>
                     );
+
                   } else {
-                    return ( // ✅ return added
+
+                    return (
                       <p className='py-0.5' key={i}>
                         {item.name} x {item.quantity} <span>{item.size}</span>,
                       </p>
@@ -125,28 +189,38 @@ const Orders = ({ token }) => {
                   }
 
                 })}
+
               </div>
 
-              {/* NAME */}
+
+              {/* CUSTOMER NAME */}
               <p className='mt-3 mb-2 font-medium'>
                 {order.address.firstName} {order.address.lastName}
               </p>
 
+
               {/* ADDRESS */}
               <div>
+
                 <p>{order.address.street},</p>
 
                 <p>
                   {order.address.city}, {order.address.state},{" "}
                   {order.address.country}, {order.address.zipcode}
                 </p>
+
               </div>
 
+
+              {/* PHONE */}
               <p>{order.address.phone}</p>
 
             </div>
 
-            {/* PAYMENT INFO */}
+
+
+            {/* ================== PAYMENT INFO ================== */}
+
             <div>
 
               <p className='text-sm sm:text-[15px]'>
@@ -167,16 +241,21 @@ const Orders = ({ token }) => {
 
             </div>
 
-            {/* AMOUNT */}
+
+
+            {/* ================== AMOUNT ================== */}
+
             <p className='text-sm sm:text-[15px]'>
-              Amount : {currency}
-              {order.amount}
+              Amount : {currency} {order.amount}
             </p>
 
-            {/* STATUS */}
+
+
+            {/* ================== STATUS ================== */}
+
             <select
+              value={order.status}
               onChange={(e) => orderStatusHandler(e, order._id)}
-              value={order.status} // ✅ fixed
               className='p-2 font-semibold cursor-pointer'
             >
 
@@ -189,7 +268,9 @@ const Orders = ({ token }) => {
             </select>
 
           </div>
+
         ))}
+
       </div>
 
     </div>

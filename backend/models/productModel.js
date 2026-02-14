@@ -1,41 +1,93 @@
+// ================== IMPORTS ==================
+
 import mongoose from "mongoose";
+
+
+// ================== PRODUCT SCHEMA ==================
+
 const productSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    imageUrl: {
-        type: Array,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    subCategory: {
-        type: String,
-        required: true
-    },
-    sizes: {
-        type: Array,
-        required: true
-    },
-    bestSeller: {
-        type: Boolean,
-        default: false
-    },
-    date: {
-        type:Number,
-        required: true
-    }
-})
-const productModel = mongoose.models.product || mongoose.model('product', productSchema);
+
+  // ================== PRODUCT NAME ==================
+
+  name: {
+    type: String,
+    required: true,
+  },
+
+
+  // ================== DESCRIPTION ==================
+
+  description: {
+    type: String,
+    required: true,
+  },
+
+
+  // ================== PRICE ==================
+
+  price: {
+    type: Number,
+    required: true,
+  },
+
+
+  // ================== IMAGES ==================
+
+  imageUrl: {
+    type: Array,
+    required: true,
+  },
+
+
+  // ================== CATEGORY ==================
+
+  category: {
+    type: String,
+    required: true,
+  },
+
+
+  // ================== SUB CATEGORY ==================
+
+  subCategory: {
+    type: String,
+    required: true,
+  },
+
+
+  // ================== AVAILABLE SIZES ==================
+
+  sizes: {
+    type: Array,
+    required: true,
+  },
+
+
+  // ================== BEST SELLER FLAG ==================
+
+  bestSeller: {
+    type: Boolean,
+    default: false,
+  },
+
+
+  // ================== CREATED DATE ==================
+
+  date: {
+    type: Number,
+    required: true,
+  }
+
+});
+
+
+// ================== MODEL ==================
+
+const productModel =
+  mongoose.models.product ||
+  mongoose.model('product', productSchema);
+
+
+// ================== EXPORT ==================
+
 export default productModel;

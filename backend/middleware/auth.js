@@ -1,29 +1,60 @@
+// ================== IMPORTS ==================
+
 import jwt from "jsonwebtoken";
 
+
+// ================== USER AUTH MIDDLEWARE ==================
+
 const authUser = async (req, res, next) => {
+  try {
+
+    // ================== GET TOKEN ==================
+
     const { token } = req.headers;
 
+
+    // ================== CHECK TOKEN ==================
+
     if (!token) {
-        return res.status(401).json({
-            message: "Unauthorized access",
-            success: false
-        });
+
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+
     }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-        // ✅ Attach to request, NOT body
-        req.userId = decoded.id;
+    // ================== VERIFY TOKEN ==================
 
-        next();
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET_KEY
+    );
 
-    } catch (error) {
-        return res.status(401).json({
-            message: "Invalid token",
-            success: false
-        });
-    }
+
+    // ================== ATTACH USER ID ==================
+
+    // Attach userId to request object
+    req.userId = decoded.id;
+
+
+    // ================== NEXT ==================
+
+    next();
+
+  } catch (error) {
+
+    // ================== ERROR ==================
+
+    return res.status(401).json({
+      success: false,
+      message: "Invalid token",
+    });
+  }
 };
+
+
+// ================== EXPORT ==================
 
 export default authUser;

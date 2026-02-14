@@ -13,7 +13,8 @@ import { ShopContext } from '../context/ShopContext';
 
 function Navbar() {
 
-  // ================== STATES ==================
+
+  // ================== STATE ==================
 
   const [visible, setVisible] = React.useState(false);
 
@@ -25,18 +26,25 @@ function Navbar() {
     getCartCount,
     setToken,
     navigate,
-    token, // ✅ GET TOKEN
+    token,
   } = React.useContext(ShopContext);
 
 
-  // ================== LOGOUT ==================
+
+  // ================== LOGOUT FUNCTION ==================
 
   const handleLogout = () => {
+
     localStorage.removeItem('token');
+
     setToken('');
+
     navigate('/login');
-    window.location.reload();
+
+    window.location.reload(); // force refresh
+
   };
+
 
 
   // ================== UI ==================
@@ -58,30 +66,30 @@ function Navbar() {
 
 
 
-      {/* ================== DESKTOP MENU ================== */}
+      {/* ================== DESKTOP NAVIGATION ================== */}
 
       <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
 
 
-        <NavLink className='flex items-center gap-1 flex-col' to='/'>
+        <NavLink className='flex flex-col items-center gap-1' to='/'>
           Home
           <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
         </NavLink>
 
 
-        <NavLink className='flex items-center gap-1 flex-col' to='/collection'>
+        <NavLink className='flex flex-col items-center gap-1' to='/collection'>
           Collections
           <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
         </NavLink>
 
 
-        <NavLink className='flex items-center gap-1 flex-col' to='/about'>
+        <NavLink className='flex flex-col items-center gap-1' to='/about'>
           About
           <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
         </NavLink>
 
 
-        <NavLink className='flex items-center gap-1 flex-col' to='/contact'>
+        <NavLink className='flex flex-col items-center gap-1' to='/contact'>
           Contact
           <hr className='w-2/4 border-none h-[1.5px] bg-gray-700 hidden' />
         </NavLink>
@@ -90,12 +98,13 @@ function Navbar() {
 
 
 
-      {/* ================== RIGHT ICONS ================== */}
+      {/* ================== RIGHT SECTION ================== */}
 
       <div className='flex items-center gap-6'>
 
 
-        {/* Search */}
+        {/* ================== SEARCH ICON ================== */}
+
         <img
           onClick={() => setShowSearch(prev => !prev)}
           src={assets.search_icon}
@@ -104,13 +113,12 @@ function Navbar() {
         />
 
 
-        {/* ================= PROFILE ================= */}
+
+        {/* ================== PROFILE ================== */}
 
         {token ? (
 
-          // ✅ SHOW ONLY IF LOGGED IN
           <div className='group relative'>
-
 
             <img
               src={assets.profile_icon}
@@ -119,8 +127,9 @@ function Navbar() {
             />
 
 
-            {/* Dropdown */}
-            <div className='hidden group-hover:block absolute dropdown-menu right-0 pt-4'>
+            {/* ================== DROPDOWN ================== */}
+
+            <div className='hidden group-hover:block absolute right-0 pt-4'>
 
               <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-500 rounded'>
 
@@ -128,7 +137,10 @@ function Navbar() {
                   My Profile
                 </p>
 
-                <p className='hover:text-black cursor-pointer'  onClick={() => navigate('/orders')}>
+                <p
+                  onClick={() => navigate('/orders')}
+                  className='hover:text-black cursor-pointer'
+                >
                   Orders
                 </p>
 
@@ -147,7 +159,6 @@ function Navbar() {
 
         ) : (
 
-          // ❌ IF NOT LOGGED IN → SHOW LOGIN LINK
           <Link to='/login'>
             <img
               src={assets.profile_icon}
@@ -160,7 +171,7 @@ function Navbar() {
 
 
 
-        {/* ================= CART ================= */}
+        {/* ================== CART ================== */}
 
         <Link to='/cart' className='relative'>
 
@@ -178,7 +189,8 @@ function Navbar() {
 
 
 
-        {/* Mobile Menu */}
+        {/* ================== MOBILE MENU ICON ================== */}
+
         <img
           onClick={() => setVisible(true)}
           src={assets.menu_icon}
@@ -197,26 +209,25 @@ function Navbar() {
         ease-in duration-300 ${visible ? 'w-full' : 'w-0'}`}
       >
 
-
         <div className='flex flex-col text-gray-700'>
 
+
+          {/* Back Button */}
 
           <div
             onClick={() => setVisible(false)}
             className='flex items-center gap-4 p-3'
           >
-
             <img
               src={assets.dropdown_icon}
-              alt="Dropdown"
+              alt="Back"
               className='h-4 rotate-180'
             />
-
             <p className='cursor-pointer'>Back</p>
-
           </div>
 
 
+          {/* Links */}
 
           <NavLink onClick={() => setVisible(false)} className='py-2 pl-6 border-b' to='/'>
             Home
@@ -241,5 +252,8 @@ function Navbar() {
     </div>
   );
 }
+
+
+// ================== EXPORT ==================
 
 export default Navbar;

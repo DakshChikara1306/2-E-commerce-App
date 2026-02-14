@@ -1,15 +1,33 @@
+// ================== IMPORTS ==================
+
 import React from 'react';
+
 import { assets } from '../assets/assets.js';
 
+
+// ================== COMPONENT ==================
+
 const Navbar = ({ onLogout }) => {
+
+
+  // ================== UI ==================
+
   return (
+
     <div className="flex justify-between items-center py-2 px-[4%] bg-gray-200">
 
+
+      {/* ================== LOGO ================== */}
+
       <img
-        className="w-[max(10%,80px)]"
         src={assets.logo}
         alt="logo"
+        className="w-[max(10%,80px)]"
       />
+
+
+
+      {/* ================== LOGOUT BUTTON ================== */}
 
       <button
         onClick={onLogout}
@@ -17,6 +35,7 @@ const Navbar = ({ onLogout }) => {
       >
         Logout
       </button>
+
 
     </div>
   );
