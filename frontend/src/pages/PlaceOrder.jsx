@@ -157,6 +157,13 @@ const PlaceOrder = () => {
           break;
         }
 
+         case 'stripe':
+  case 'razorpay': {
+
+    toast.info("This feature will be available soon");
+    break;
+  }
+
       }
 
     } catch (error) {
